@@ -4,21 +4,9 @@ EZ-Budget is a PHP based web application that keeps track of your income and exp
 ## Get started
 Visit https://durandev.net/budget/index.php to use my hosted version.
 
-## Installation via Linux
-```
-git clone https://github.com/damiend97/EZ-Budget/
-```
-```
-cd EZ-Budget
-```
-```
-php -S localhost:8000
-```
-
 ## Login/Signup
 1. If first time user, click signup and create your user account.
 2. If you already have an account, login via the login button.
-
 
 ## Dashboard Layout
 1. Once logged in you will see a top navigation bar that has your username in the top right.
