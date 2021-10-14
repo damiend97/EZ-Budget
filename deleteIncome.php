@@ -7,6 +7,7 @@ $amount = mysqli_real_escape_string($dbCon, $_POST['amount']);
 $date = mysqli_real_escape_string($dbCon, $_POST['date']);
 
 $sql = "DELETE FROM income WHERE name='$name' AND amount='$amount' AND date='$date'";
+
 mysqli_query($dbCon, $sql);
 
 ?>

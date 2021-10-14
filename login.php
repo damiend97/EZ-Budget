@@ -45,24 +45,32 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>LOGIN</title>
+	<title>EZ Login</title>
 	<style>
 		* {
 			margin: 0;
 			padding: 0;
 		}
 		body {
-			background: blue;
-			color: white;
+			font-family: Arial, Helvetica, sans-serif;
 		}
 		.headerWrapper {
-			background: rgba(255,255,255,.4);
-			text-align: center;
-			padding: 15px;
+			background: #2c2c2c;
+			text-align: left;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 25px;
+			height: 75px;
+			display: flex;
+			align-items: center;
 		}
 		#headerLogo {
-			height: 45px;
-			width: 45px;
+			height: 60px;
+			width: 60px;
+			background: url('./logo.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
 		}
 		.rootWrapper {
 			height: 100vh;
@@ -79,10 +87,24 @@
 			flex-wrap: wrap;
 			text-align: center;
 		}
+		.signup {
+			font-size: 2em;
+			margin-top: 50px;
+			margin-bottom: 30px;
+			font-weight: bolder;
+			background: #2c2c2c;
+			color: white;
+			border: none !important;
+			padding: 15px;
+			width: 370px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 		.rootWrapper input {
 			display: block;
 			box-sizing: border-box;
-			width: 250px;
+			height: 50px;
+			width: 400px;
 			text-align: center;
 			margin: 10px;
 			padding: 5px;
@@ -91,6 +113,16 @@
 		.rootWrapper a {
 			color: white;
 			text-decoration: none;
+		}
+		.submit-button {
+			background: #2c2c2c;
+			color: white;
+			border: none;
+			font-size: 1.25em;
+		}
+		.submit-button:hover {
+			background: #555;
+			cursor: pointer;
 		}
 		@media only screen and (min-width: 450px) {
 			.rootWrapper input {
@@ -101,16 +133,19 @@
 </head>
 <body>
 	<div class="headerWrapper">
-		<a href="index.php"><img src="logo.png" alt="logo" id="headerLogo" /></a>
+		<a href="index.php">
+			<div id="headerLogo"></div>
+		</a>
 	</div>
 	<div class="rootWrapper">
 		<form method="post" action="login.php" autocomplete="off">
+			<div class="signup">LOGIN</div>
+			<?php echo $loginMessage; ?>
 			<input type="text" name="username" placeholder="username" required>
 			<input type="password" name="password" placeholder="password" required>
-			<input type="submit" value="login">
-			<?php echo $loginMessage; ?>
-			<br /><br />
-			<a href="signup.php">signup</a>
+			<input class="submit-button" type="submit" value="Login">
+			<br><i>Don't have an account?</i><br><br>
+			<a href="signup.php" style="color: black;">Signup</a>
 		</form>
 	</div>
 	<script

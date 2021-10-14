@@ -65,27 +65,34 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>SIGNUP</title>
+	<title>EZ Signup</title>
 	<style>
 		* {
 			margin: 0;
 			padding: 0;
 		}
 		body {
-			background: blue;
-			color: white;
+			font-family: Arial, Helvetica, sans-serif;
 		}
 		.headerWrapper {
-			background: rgba(255,255,255,.4);
-			text-align: center;
-			padding: 15px;
+			background: #2c2c2c;
+			text-align: left;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 25px;
+			height: 75px;
+			display: flex;
+			align-items: center;
 		}
 		#headerLogo {
-			height: 45px;
-			width: 45px;
+			height: 60px;
+			width: 60px;
+			background: url('./logo.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
 		}
 		.rootWrapper {
-			height: 100vh;
 			width: 100%;
 			position: absolute;
 			top: 0;
@@ -100,38 +107,90 @@
 			text-align: center;
 			margin-top: 75px;
 		}
+		.signup {
+			font-size: 2em;
+			margin-top: 50px;
+			margin-bottom: 30px;
+			font-weight: bolder;
+			background: #2c2c2c;
+			color: white;
+			border: none !important;
+			padding: 15px;
+			width: 370px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 		.rootWrapper input {
 			display: block;
 			box-sizing: border-box;
-			width: 250px;
+			height: 50px;
+			width: 100%;
 			text-align: center;
 			margin: 10px;
 			padding: 5px;
 			outline: 0;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.submit-button {
+			background: #2c2c2c;
+			color: white;
+			border: none;
+			font-size: 1.25em;
+		}
+		.submit-button:hover {
+			background: #555;
+			cursor: pointer;
 		}
 		.rootWrapper input[type="radio"] {
 			width: 100%;
 			height: 2rem;
-			border: 0px;
+			border: 0;
+			color: #2c2c2c;
+		}
+		.rootWrapper input[type="radio"]:checked {
+			color: #2c2c2c;
+			background: #2c2c2c;
+			border: none;
 		}
 		.rootWrapper a {
 			color: white;
 			text-decoration: none;
 		}
 		#gender-select {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto;
+			padding-top: 15px;
+			padding-bottom: 15px;
+		}
+		#gender-select span {
+			width: 100%;
+			color: #888;
 		}
 		#gender-select .row {
-			background-position: left;
-			background-size: contain;
-			background-repeat: no-repeat;
 			margin-top: 20px;
 			margin-bottom: 20px;
+			text-align: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 75px;
+			height: 75px;
+			margin-left: 15px;
+			margin-right: 15px;
 		}
 		#male-row {
-			background: url('male.png');
+			background: #2c2c2c;
+			border: 1px solid #2c2c2c;
 		}
 		#female-row {
-			background: url('female.png');
+			background: white;
+			border: 1px solid #2c2c2c;
 		}
 		#gender-select input {
 			outline: 0;
@@ -141,21 +200,28 @@
 			.rootWrapper input {
 				width: 400px;
 			}
+			#gender-select {
+				width: 400px;
+			}
 		}
 	</style>
 </head>
 <body>
 	<div class="headerWrapper">
-		<a href="index.php"><img src="logo.png" alt="logo" id="headerLogo" /></a>
+		<a href="index.php">
+			<div id="headerLogo"></div>
+		</a>
 	</div>
 	<div class="rootWrapper">
 		<form action="signup.php" method="post" autocomplete="off">
+			<div class="signup">SIGNUP</div>
+			<?php echo $passMessage ?>
 			<input type="text" name="username" placeholder="username" required />
 			<input type="password" name="password" placeholder="password" required />
 			<input type="password" name="re-password" placeholder="repeat password" required />
 			<div id="gender-select">
 				<br />
-				<span>select gender</span>
+				<span><i>Select Your Theme</i></span>
 				<div class="row" id="male-row">
 					<input type="radio" name="gender" id="male" value="male" required/>
 				</div>
@@ -164,11 +230,9 @@
 				</div>
 			</div>
 			<br />
-			<input type="submit" value="signup">
-			<br />
-			<?php echo $passMessage ?>
-			<br /><br />
-			<a href="login.php">login</a>
+			<input class="submit-button" type="submit" value="Signup">
+			<br><i>Already have an account?</i><br><br>
+			<a href="login.php" style="color: black;">Login</a><br><br>
 		</form>
 	</div>
 	<script

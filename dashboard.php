@@ -28,9 +28,9 @@
 		$gender = mysqli_fetch_array($result);
 
 		if ($gender[0] == "male") {
-			$bg = "blue";
+			$bg = "#2c2c2c";
 		} else {
-			$bg = "pink";
+			$bg = "#fff";
 		}
 
 		// ----data logic----
@@ -47,10 +47,14 @@
 		// iterate through each row of results
 		while($row = mysqli_fetch_array($result))
 		{
+			// format date
+			$date = date_create($row[4]);
+			$date_formatted = date_format($date,"m/d/Y");
+			
 			// push data to arrays
 			array_push($incomeNames, $row[2]);
 			array_push($incomeAmounts, $row[3]);
-			array_push($incomeDates, $row[4]);
+			array_push($incomeDates, $date_formatted);
 	   }
 
 	   // expenses -----
@@ -66,10 +70,14 @@
 		// iterate through each row of results
 		while($row = mysqli_fetch_array($result))
 		{
+			// format date
+			$expenseDate = date_create($row[4]);
+			$expenseDate_formatted = date_format($expenseDate,"m/d/Y");
+			
 			// push data to arrays
 			array_push($expenseNames, $row[2]);
 			array_push($expenseAmounts, $row[3]);
-			array_push($expenseDates, $row[4]);
+			array_push($expenseDates, $expenseDate_formatted);
 	   }
 	}
 ?>
@@ -79,7 +87,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>DASHBOARD</title>
+	<title>EZ Dashboard</title>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	<style>
 		* {
@@ -89,24 +97,50 @@
 		body {
 			background: blue;
 			color: white;
-			height: 2000px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		.headerWrapper {
+			background: #2c2c2c;
+			text-align: left;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 25px;
+			height: 75px;
+			display: flex;
+			align-items: center;
+		}
+		#headerLogo {
+			height: 60px;
+			width: 60px;
+			background: url('./logo.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
 		}
 		nav {
-			background: rgba(0,0,0,.4);
+			background: #2c2c2c;
 			padding: 10px;
 			display: flex;
 			align-items: center;
+			padding-left: 30px;
+			padding-right: 30px;
+			border-bottom: 1px solid white;
 		}
 		nav span {
 			margin-left: auto;
 		}
 		.mainWrapper {
+			display: flex;
+			justify-content: space-evenly;
+			margin-top: 50px;
 		}
 		.incomeWrapper {
-			margin-bottom: 10px;
+			/* margin-bottom: 10px; */
+			width: 45%;
 		}
 		.expenseWrapper {
-			margin-bottom: 10px;
+			/* margin-bottom: 10px; */
+			width: 45%;
 		}
 		.rootHeader {
 			background: white;
@@ -150,7 +184,7 @@
 			right: 0;
 			left: 0;
 			bottom: 0;
-			background: rgba(0,0,0,.8);
+			background: rgba(0,0,0,.9);
 			z-index: 1;
 		}
 		.overlayHeader {
@@ -194,6 +228,12 @@
 		}
 		#logout-link {
 			cursor: pointer;
+			height: 60px;
+			width: 60px;
+			background: url('./logo.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
 		}
 		.del-but {
 			padding: 5px;
@@ -236,15 +276,15 @@
 	</div>
 	<!-- Navigation -->
 	<nav>
-		<img id="logout-link" src="logo.png" alt="logo" height="40px" width="40px" />
-		<span><?php echo $_SESSION["username"]; ?></span>
+		<div id="logout-link"></div>
+		<span style="color: white !important;"><?php echo $_SESSION["username"]; ?></span>
 	</nav>
 	<!-- Main -->
 	<div class="mainWrapper">
 		<!-- Income -->
 		<div class="incomeWrapper">
 			<div class="rootHeader">
-				income
+				Income
 				<i class="fas fa-plus tog tog-income"></i>
 			</div>
 			<div class="rootWrapper">
@@ -254,7 +294,7 @@
 		<!-- Expenses -->
 		<div class="expenseWrapper">
 			<div class="rootHeader">
-				expenses
+				Expenses
 				<i class="fas fa-plus tog tog-expense"></i>
 			</div>
 			<div class="rootWrapper">
@@ -281,8 +321,16 @@
 	<script>
 		$(document).ready(function() {
 			const bgColor = "<?php Print($bg); ?>";
-			const bgStrg = "linear-gradient(to bottom, " + bgColor +", black) fixed"
-			$('body').css("background",bgStrg);
+			// const bgStrg = "linear-gradient(to bottom, " + bgColor +", black) fixed"
+			$('body').css("background",bgColor);
+
+			if(bgColor === "#fff") {
+				$('body').css('color','#2c2c2c');
+				$('.row').css('border-color','#2c2c2c');
+				$('.rootHeader').css('background','#555');
+				$('.rootHeader').css('color','#fff');
+			}
+			
 		})
 	</script>
 	<script>
@@ -313,6 +361,7 @@
 			});
 		};
 
+
 		$(".iDel").click(function(e) {
 			var ask = window.confirm("Are you sure you want to delete this item?");
 
@@ -330,18 +379,26 @@
 				let amount = getTextNodesIn(childTwo).text();
 				let date = getTextNodesIn(childThree).text();
 
+				let dateArray = date.split("/");
+				let mo = dateArray[0];
+				let dy = dateArray[1];
+				let yr = dateArray[2];
+				let sqlDate = (yr + "-" + mo + "-" + dy);
+
 				$.ajax({
 					type: "POST",
 					url: 'deleteIncome.php',
 					data: {
 						name: name,
 						amount: amount,
-						date: date
+						date: sqlDate
 					},
 					success: function(data){
 						location.reload();
 					}
-				});
+				})
+				
+				
 			}
 
 		});
@@ -363,18 +420,25 @@
 				let amount = getTextNodesIn(childTwo).text();
 				let date = getTextNodesIn(childThree).text();
 
+				let dateArray = date.split("/");
+				let mo = dateArray[0];
+				let dy = dateArray[1];
+				let yr = dateArray[2];
+				let sqlDate = (yr + "-" + mo + "-" + dy);
+
 				$.ajax({
 					type: "POST",
 					url: 'deleteExpense.php',
 					data: {
 						name: name,
 						amount: amount,
-						date: date
+						date: sqlDate
 					},
 					success: function(data){
 						location.reload();
 					}
-				});
+				})
+				
 			}
 		});
 	</script>
